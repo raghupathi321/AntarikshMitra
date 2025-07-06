@@ -3,24 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Starship Console</title>
+    <title>AI Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --space-dark: #0A0A1A; /* Deep space background */
-            --space-light-blue: #00BFFF; /* Deep Sky Blue */
-            --space-purple: #8A2BE2; /* Blue Violet */
-            --space-pink: #FF69B4; /* Hot Pink */
-            --text-primary: #E0FFFF; /* Light Cyan for primary text */
-            --text-secondary: #ADD8E6; /* Light Blue for secondary text */
-            --glass-bg: rgba(255, 255, 255, 0.03); /* Extremely subtle transparency */
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --glow-1: 0 0 10px rgba(0, 191, 255, 0.5); /* Blue glow */
-            --glow-2: 0 0 15px rgba(138, 43, 226, 0.6); /* Purple glow */
-            --glow-3: 0 0 20px rgba(255, 105, 180, 0.7); /* Pink glow */
-            --console-font: 'Poppins', sans-serif; /* Body font */
-            --header-font: 'Rajdhani', sans-serif; /* Header/techy font */
+            --primary-color: #4A90E2; /* A modern blue */
+            --secondary-color: #6A67CE; /* A soft violet/purple */
+            --background-dark: #1E212D; /* Deep dark background */
+            --background-light: #282C37; /* Slightly lighter dark for cards */
+            --text-light: #E0E0E0;
+            --text-dark: #A0A0A0;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --shadow-light: rgba(0, 0, 0, 0.1);
+            --shadow-dark: rgba(0, 0, 0, 0.25);
+            --font-family-body: 'Inter', sans-serif;
         }
 
         * {
@@ -30,61 +27,24 @@
         }
 
         body {
-            font-family: var(--console-font);
-            background: radial-gradient(circle at top left, var(--space-purple) 0%, transparent 25%),
-                        radial-gradient(circle at bottom right, var(--space-light-blue) 0%, transparent 25%),
-                        linear-gradient(180deg, var(--space-dark) 0%, #00000A 100%); /* Deep cosmic background */
+            font-family: var(--font-family-body);
+            background: linear-gradient(135deg, var(--background-dark) 0%, #12141A 100%);
             min-height: 100vh;
             display: flex;
-            color: var(--text-primary);
+            color: var(--text-light);
             overflow-x: hidden;
-            position: relative; /* For star animation */
-        }
-
-        /* Starfield animation */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: transparent;
-            z-index: -1;
-            animation: twinkle 150s linear infinite; /* Slower, subtle twinkle */
-            background-image: radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
-                              radial-gradient(circle at 70% 80%, rgba(255, 255, 255, 0.6) 1px, transparent 1px),
-                              radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.4) 0.5px, transparent 0.5px);
-            background-size: 3000px 3000px; /* Larger background to allow for movement */
-        }
-
-        @keyframes twinkle {
-            0% { background-position: 0% 0%; }
-            100% { background-position: 100% 100%; }
-        }
-
-
-        /* Glassmorphism base */
-        .glassmorphism {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px) saturate(180%); /* Stronger blur */
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4); /* Deeper shadow */
-            border-radius: 15px; /* Slightly less rounded for a techy feel */
         }
 
         .sidebar {
-            width: 280px; /* Wider sidebar */
-            padding: 30px 0; /* More padding */
+            width: 250px;
+            background-color: var(--background-light);
+            padding: 25px 0;
             position: fixed;
             height: 100vh;
             overflow-y: auto;
-            z-index: 1000;
-        }
-
-        .sidebar.glassmorphism {
-            border-right: 1px solid var(--glass-border);
+            border-right: 1px solid var(--border-color);
+            box-shadow: 2px 0 10px var(--shadow-dark);
+            transition: width 0.3s ease;
         }
 
         .sidebar-nav {
@@ -92,83 +52,67 @@
         }
 
         .sidebar-nav li {
-            margin: 8px 0; /* More spacing */
+            margin: 6px 0;
         }
 
         .sidebar-nav a {
             display: flex;
             align-items: center;
-            padding: 18px 25px; /* Larger padding */
-            color: var(--text-secondary); /* Softer initial link color */
+            padding: 16px 20px;
+            color: var(--text-dark);
             text-decoration: none;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother transition */
-            border-radius: 0 30px 30px 0;
-            margin-right: 30px; /* More margin */
-            position: relative;
-            overflow: hidden;
-            font-size: 1.1em; /* Larger font */
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-family: var(--header-font); /* Sidebar links use header font for techy feel */
+            transition: all 0.3s ease;
+            border-radius: 0 20px 20px 0;
+            margin-right: 20px;
+            font-size: 0.95em;
+            font-weight: 500;
         }
 
         .sidebar-nav a:hover {
-            background: rgba(255, 255, 255, 0.08);
-            color: white;
-            transform: translateX(10px); /* More pronounced hover */
-            box-shadow: var(--glow-1); /* Subtle blue glow on hover */
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+            transform: translateX(5px);
+            box-shadow: 0 4px 10px var(--shadow-light);
         }
 
         .sidebar-nav a.active {
-            background: rgba(255, 255, 255, 0.12);
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
             color: white;
-            box-shadow: var(--glow-2), var(--glow-3); /* Multi-color glow for active */
-            transform: translateX(7px);
-            font-weight: 700; /* Bolder active text */
-        }
-        
-        /* Ethereal active border */
-        .sidebar-nav a.active::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 5px; /* Thicker, prominent border */
-            background: linear-gradient(to bottom, var(--space-pink), var(--space-purple), var(--space-light-blue));
-            border-radius: 0 30px 30px 0;
-            filter: blur(2px); /* Ethereal blur */
-            box-shadow: var(--glow-1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transform: translateX(3px);
+            font-weight: 600;
         }
 
         .sidebar-nav a i {
-            margin-right: 15px; /* More spacing for icon */
-            width: 25px; /* Larger icon area */
+            margin-right: 12px;
+            width: 20px;
             text-align: center;
-            color: var(--space-light-blue); /* Blue for icons */
+            color: var(--primary-color); /* Highlight icons */
             transition: color 0.3s ease;
-            font-size: 1.2em; /* Larger icons */
         }
 
         .sidebar-nav a.active i {
             color: white;
-            text-shadow: var(--glow-1); /* Icon glow */
         }
 
         .main-content {
             flex: 1;
-            margin-left: 280px; /* Adjust for wider sidebar */
-            padding: 40px; /* More overall padding */
+            margin-left: 250px;
+            padding: 30px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            gap: 30px; /* Increased spacing between sections */
+            gap: 25px;
         }
 
         .section {
             display: none;
-            padding: 40px; /* Increased section padding */
-            animation: fadeIn 0.8s cubic-bezier(0.165, 0.84, 0.44, 1); /* Smoother fade-in */
+            background-color: var(--background-light);
+            border-radius: 15px;
+            padding: 35px;
+            box-shadow: 0 8px 25px var(--shadow-dark);
+            animation: fadeIn 0.6s ease-out;
+            border: 1px solid var(--border-color);
         }
 
         .section.active {
@@ -176,326 +120,246 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .section h1 {
-            font-family: var(--header-font);
-            color: var(--text-primary);
-            margin-bottom: 30px;
-            font-size: 3.2em; /* Larger, bolder heading */
-            text-shadow: var(--glow-1); /* Subtle blue glow for titles */
-            background: linear-gradient(45deg, var(--space-light-blue), var(--space-purple), var(--space-pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--text-light);
+            margin-bottom: 25px;
+            font-size: 2.2em;
+            font-weight: 700;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 15px;
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
         }
 
         .section h1 i {
-            font-size: 1.3em;
-            color: var(--space-pink); /* Pink icon */
-            filter: drop-shadow(0 0 5px var(--space-pink));
+            font-size: 1.1em;
+            color: var(--primary-color);
         }
 
         .section h2 {
-            font-family: var(--header-font);
-            color: var(--text-primary);
-            margin: 30px 0 20px 0; /* Adjusted margins */
-            font-size: 2em;
-            text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle divider */
-            padding-bottom: 10px;
+            color: var(--text-light);
+            margin: 25px 0 15px 0;
+            font-size: 1.6em;
+            font-weight: 600;
         }
 
         .card {
-            padding: 30px;
-            margin: 20px 0;
-            transition: transform 0.4s ease-out, box-shadow 0.4s ease-out;
-            position: relative;
+            background-color: #313543; /* Slightly darker than main content background */
+            border-radius: 12px;
+            padding: 25px;
+            margin: 15px 0;
+            box-shadow: 0 4px 15px var(--shadow-light);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .card:hover {
-            transform: translateY(-8px); /* Noticeable lift */
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5); /* Deeper shadow */
-            border-color: var(--space-pink); /* Highlight border on hover */
-        }
-
-        /* Animated border glow on hover for cards */
-        .card::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, var(--space-light-blue), var(--space-purple), var(--space-pink));
-            z-index: -1;
-            border-radius: 17px;
-            filter: blur(10px); /* Stronger initial blur */
-            opacity: 0;
-            transition: opacity 0.5s ease-out, filter 0.5s ease-out;
-            animation: borderPulse 3s infinite alternate; /* Subtle pulse */
-        }
-        
-        .card:hover::before {
-            opacity: 1;
-            filter: blur(0px); /* Sharpen on hover */
-        }
-
-        @keyframes borderPulse {
-            0% { filter: blur(10px); opacity: 0.3; }
-            50% { filter: blur(5px); opacity: 0.6; }
-            100% { filter: blur(10px); opacity: 0.3; }
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px var(--shadow-dark);
         }
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px; /* Increased gap */
-            margin: 30px 0;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
         }
 
         .stat-card {
-            background: linear-gradient(135deg, var(--space-light-blue) 0%, var(--space-purple) 100%);
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
             color: white;
-            padding: 30px;
-            border-radius: 15px;
+            padding: 25px;
+            border-radius: 12px;
             text-align: center;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.15); /* Subtle border */
         }
 
-        .stat-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .stat-card:hover::after {
-            opacity: 1; /* Star-like shimmer on hover */
+        .stat-card:hover {
+            transform: scale(1.02);
         }
 
         .stat-card h3 {
-            font-family: var(--header-font);
-            font-size: 2.8em;
-            margin-bottom: 10px;
-            text-shadow: var(--glow-1);
-            color: var(--text-primary);
+            font-size: 2em;
+            margin-bottom: 8px;
+            font-weight: 700;
         }
 
         .stat-card p {
-            font-family: var(--console-font); /* Stats text uses body font */
-            opacity: 0.95;
-            font-weight: 300;
-            font-size: 1.1em;
-            color: var(--text-secondary);
+            opacity: 0.9;
+            font-size: 0.95em;
         }
 
         .form-group {
-            margin: 25px 0;
+            margin: 18px 0;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 10px;
-            font-weight: bold;
-            color: var(--text-primary);
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
-            font-size: 1.05em;
-            font-family: var(--console-font); /* Labels use body font */
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-light);
+            font-size: 0.95em;
         }
 
         .form-group input, .form-group select, .form-group textarea {
             width: 100%;
-            padding: 15px;
-            border: 1px solid var(--glass-border);
-            background: rgba(0, 0, 0, 0.1); /* Darker input background */
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: #282C37; /* Consistent dark background for inputs */
             border-radius: 8px;
-            font-size: 1.05em;
-            color: var(--text-primary);
-            transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            font-family: var(--console-font); /* Input text uses body font */
+            font-size: 1em;
+            color: var(--text-light);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
             outline: none;
-            border-color: var(--space-light-blue);
-            box-shadow: var(--glow-1), 0 0 10px var(--space-purple); /* Dual glow on focus */
-            background: rgba(0, 0, 0, 0.2);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.3); /* Subtle focus ring */
         }
         
         .form-group input::placeholder, .form-group textarea::placeholder {
-            color: rgba(255, 255, 255, 0.4);
+            color: var(--text-dark);
         }
 
         .btn {
-            background: linear-gradient(135deg, var(--space-light-blue) 0%, var(--space-purple) 100%);
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
             color: white;
-            padding: 15px 35px;
+            padding: 12px 25px;
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 1.1em;
-            font-weight: bold;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            font-size: 1em;
+            font-weight: 600;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            font-family: var(--header-font); /* Buttons use header font */
+            letter-spacing: 0.5px;
         }
 
         .btn:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), var(--glow-2); /* Stronger glow */
-            background: linear-gradient(135deg, var(--space-purple) 0%, var(--space-pink) 100%); /* Color shift on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            opacity: 0.9;
         }
 
         .log-entry {
-            background: rgba(0, 0, 0, 0.1); /* Darker log entry */
-            border-left: 4px solid var(--space-light-blue);
-            padding: 20px;
-            margin: 15px 0;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            transition: background 0.3s ease;
-            font-family: var(--console-font); /* Log entries use body font */
+            background-color: #313543;
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
         }
         
         .log-entry:hover {
-            background: rgba(0, 0, 0, 0.2);
+            background-color: #3B3F4F;
         }
 
         .log-entry .timestamp {
-            color: var(--text-secondary);
-            font-size: 0.95em;
-            margin-bottom: 8px;
+            color: var(--text-dark);
+            font-size: 0.85em;
+            margin-bottom: 5px;
         }
         
         .log-entry strong {
-            color: var(--text-primary);
+            color: var(--text-light);
         }
 
         .progress-bar {
-            background: rgba(255, 255, 255, 0.05); /* Lighter progress bar background */
-            border-radius: 4px; /* Less rounded */
-            height: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            height: 8px;
             overflow: hidden;
-            margin: 15px 0 8px 0;
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15);
+            margin: 10px 0;
         }
 
         .progress-fill {
-            background: linear-gradient(90deg, var(--space-pink), var(--space-purple), var(--space-light-blue));
+            background: linear-gradient(90deg, #28a745, #218838); /* Green gradient */
             height: 100%;
-            transition: width 0.5s ease-out;
-            border-radius: 4px;
-            box-shadow: 0 0 8px var(--space-pink); /* Pink glow on fill */
+            transition: width 0.3s ease;
+            border-radius: 6px;
         }
 
         .model-status {
             display: inline-block;
-            padding: 8px 22px;
-            border-radius: 25px;
-            font-size: 0.95em;
-            font-weight: bold;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-            font-family: var(--header-font); /* Status uses header font */
+            letter-spacing: 0.5px;
         }
 
         .status-active {
-            background: rgba(0, 255, 0, 0.2);
-            color: #98FB98; /* Pale Green */
-            border: 1px solid rgba(0, 255, 0, 0.3);
-            text-shadow: 0 0 6px rgba(0, 255, 0, 0.6);
+            background-color: #d4edda;
+            color: #155724;
         }
 
         .status-training {
-            background: rgba(255, 193, 7, 0.2);
-            color: #FFD700; /* Gold */
-            border: 1px solid rgba(255, 193, 7, 0.3);
-            text-shadow: 0 0 6px rgba(255, 193, 7, 0.6);
+            background-color: #fff3cd;
+            color: #856404;
         }
 
         .feedback-item {
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            padding: 20px;
-            margin: 15px 0;
-            border-left: 4px solid var(--space-purple);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            font-family: var(--console-font); /* Feedback items use body font */
+            background-color: #313543;
+            border-radius: 8px;
+            padding: 18px;
+            margin: 10px 0;
+            border-left: 4px solid var(--secondary-color);
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
         }
 
         .rating {
-            color: #FFD700; /* Gold stars */
-            font-size: 1.5em;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
-        }
-        
-        .feedback-item strong {
-            color: var(--text-primary);
+            color: #ffc107;
+            font-size: 1.2em;
         }
 
         .chart-container {
             width: 100%;
-            height: 350px;
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 15px;
+            height: 300px;
+            background-color: #282C37;
+            border-radius: 12px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            margin: 25px 0;
-            color: var(--text-secondary);
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            flex-direction: column;
-            gap: 12px;
+            margin: 20px 0;
+            color: var(--text-dark);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1); /* Inner shadow for depth */
         }
         
         .chart-container i {
-            font-size: 4.5em !important;
-            color: var(--space-light-blue);
-            text-shadow: var(--glow-1);
+            font-size: 3.5em !important;
+            color: var(--primary-color);
+            margin-bottom: 10px;
         }
         
         .chart-container div:not(.progress-fill) {
-            font-size: 1.2em;
-            color: var(--text-primary);
-            font-family: var(--header-font); /* Chart text uses header font */
+            font-size: 1.1em;
+            color: var(--text-light);
+            font-weight: 500;
         }
         
         .chart-container small {
-            font-size: 0.9em;
-            color: var(--text-secondary);
-            font-family: var(--console-font); /* Small text uses body font */
+            font-size: 0.85em;
+            color: var(--text-dark);
         }
 
         /* Range input styling */
         input[type="range"] {
             -webkit-appearance: none;
             width: 100%;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 4px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
             outline: none;
             transition: background 0.3s ease;
             margin-top: 10px;
@@ -504,45 +368,40 @@
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 22px;
-            height: 22px;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
-            background: linear-gradient(45deg, var(--space-light-blue), var(--space-purple));
+            background: var(--primary-color);
             cursor: pointer;
-            box-shadow: var(--glow-1);
-            margin-top: -7px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.3);
+            margin-top: -6px;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
         }
 
         input[type="range"]::-webkit-slider-thumb:hover {
-            box-shadow: var(--glow-2);
-            transform: scale(1.1);
+            background: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(106, 103, 206, 0.4);
         }
 
         input[type="range"]::-moz-range-thumb {
-            width: 22px;
-            height: 22px;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
-            background: linear-gradient(45deg, var(--space-light-blue), var(--space-purple));
+            background: var(--primary-color);
             cursor: pointer;
-            box-shadow: var(--glow-1);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.3);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
         }
         input[type="range"]::-moz-range-thumb:hover {
-            box-shadow: var(--glow-2);
-            transform: scale(1.1);
+            background: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(106, 103, 206, 0.4);
         }
 
-
         #tempValue {
-            color: var(--space-pink);
-            font-weight: bold;
+            color: var(--primary-color);
+            font-weight: 600;
             margin-left: 10px;
-            font-size: 1.1em;
-            text-shadow: 0 0 5px var(--space-pink);
-            font-family: var(--header-font); /* Temperature value uses header font */
+            font-size: 1em;
         }
 
         /* Checkbox styling */
@@ -550,34 +409,32 @@
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
-            width: 22px;
-            height: 22px;
-            border: 2px solid var(--space-light-blue);
-            border-radius: 5px;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary-color);
+            border-radius: 4px;
             cursor: pointer;
             vertical-align: middle;
-            margin-right: 10px;
+            margin-right: 8px;
             position: relative;
-            background: rgba(0, 0, 0, 0.1);
+            background-color: #282C37;
             transition: all 0.2s ease-in-out;
-            box-shadow: inset 0 0 5px rgba(0, 191, 255, 0.2);
         }
 
         input[type="checkbox"]:checked {
-            background: var(--space-purple);
-            border-color: var(--space-pink);
-            box-shadow: var(--glow-2);
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(106, 103, 206, 0.3);
         }
 
         input[type="checkbox"]:checked::after {
-            content: '\2713';
+            content: '\2713'; /* Checkmark unicode character */
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             color: white;
-            font-size: 16px;
-            text-shadow: 0 0 5px white;
+            font-size: 14px;
         }
 
         @media (max-width: 768px) {
@@ -590,49 +447,37 @@
                 height: auto;
                 position: relative;
                 border-right: none;
-                border-bottom: 1px solid var(--glass-border);
+                border-bottom: 1px solid var(--border-color);
+                box-shadow: 0 2px 10px var(--shadow-dark);
                 padding: 15px 0;
             }
 
             .sidebar-nav {
                 display: flex;
                 flex-wrap: wrap;
-                justify-content: space-around;
+                justify-content: center;
                 padding: 0 10px;
             }
 
             .sidebar-nav li {
-                flex: 1 1 30%; /* Allow 3 items per row */
-                min-width: 100px;
+                flex: 1 1 30%;
+                min-width: 90px;
                 margin: 5px;
             }
 
             .sidebar-nav a {
-                border-radius: 10px;
+                border-radius: 8px;
                 margin-right: 0;
                 justify-content: center;
                 flex-direction: column;
                 padding: 10px;
                 text-align: center;
-                font-size: 0.9em;
+                font-size: 0.8em;
             }
 
             .sidebar-nav a i {
                 margin-right: 0;
                 margin-bottom: 5px;
-            }
-
-            .sidebar-nav a:hover,
-            .sidebar-nav a.active {
-                transform: none;
-            }
-
-            .sidebar-nav a.active::before {
-                width: 100%;
-                height: 4px;
-                top: 0;
-                left: 0;
-                border-radius: 10px 10px 0 0;
             }
 
             .main-content {
@@ -645,120 +490,125 @@
             }
             
             .section h1 {
-                font-size: 2.2em;
+                font-size: 1.8em;
                 text-align: center;
                 flex-direction: column;
                 gap: 10px;
+                padding-bottom: 10px;
             }
             .section h1 i {
                 font-size: 1em;
             }
 
             .section h2 {
-                font-size: 1.5em;
+                font-size: 1.4em;
                 text-align: center;
+            }
+
+            .card {
+                padding: 20px;
             }
         }
     </style>
 </head>
 <body>
-    <nav class="sidebar glassmorphism">
+    <nav class="sidebar">
         <ul class="sidebar-nav">
             <li><a href="#" onclick="showSection('overview')" class="active" data-section="overview">
-                <i class="fas fa-satellite"></i> Overview
+                <i class="fas fa-chart-line"></i> Overview
             </a></li>
             <li><a href="#" onclick="showSection('docs')" data-section="docs">
-                <i class="fas fa-folder-open"></i> Data Archives
+                <i class="fas fa-file-alt"></i> Documents
             </a></li>
             <li><a href="#" onclick="showSection('model')" data-section="model">
-                <i class="fas fa-brain"></i> AI Core
+                <i class="fas fa-brain"></i> AI Model
             </a></li>
             <li><a href="#" onclick="showSection('logs')" data-section="logs">
-                <i class="fas fa-telescope"></i> Probe Logs
+                <i class="fas fa-search"></i> Query Logs
             </a></li>
             <li><a href="#" onclick="showSection('feedback')" data-section="feedback">
-                <i class="fas fa-comments"></i> Uplink Feedback
+                <i class="fas fa-comments"></i> Feedback
             </a></li>
             <li><a href="#" onclick="showSection('analytics')" data-section="analytics">
-                <i class="fas fa-chart-area"></i> Stellar Analytics
+                <i class="fas fa-chart-bar"></i> Analytics
             </a></li>
             <li><a href="#" onclick="showSection('settings')" data-section="settings">
-                <i class="fas fa-cogs"></i> System Settings
+                <i class="fas fa-cog"></i> Settings
             </a></li>
         </ul>
     </nav>
 
     <div class="main-content">
-        <div id="overview" class="section active glassmorphism">
-            <h1><i class="fas fa-satellite"></i> Command Console Overview</h1>
+        <div id="overview" class="section active">
+            <h1><i class="fas fa-chart-line"></i> Dashboard Overview</h1>
             
             <div class="stats-grid">
                 <div class="stat-card">
                     <h3>1,245</h3>
-                    <p>Processed Queries</p>
+                    <p>Total Queries</p>
                 </div>
                 <div class="stat-card">
                     <h3>98.5%</h3>
-                    <p>AI Core Precision</p>
+                    <p>Model Accuracy</p>
                 </div>
                 <div class="stat-card">
                     <h3>156</h3>
-                    <p>Data Logs Archived</p>
+                    <p>Documents Processed</p>
                 </div>
                 <div class="stat-card">
                     <h3>4.8/5</h3>
-                    <p>Crew Satisfaction</p>
+                    <p>User Satisfaction</p>
                 </div>
             </div>
 
-            <div class="card glassmorphism">
-                <h2>Recent Transmissions</h2>
+            <div class="card">
+                <h2>Recent Activity</h2>
                 <div class="log-entry">
-                    <div class="timestamp">2025-07-06 14:30:25</div>
-                    <div>AI Core processed data log "Galactic Survey Report"</div>
+                    <div class="timestamp">2 minutes ago</div>
+                    <div>Model processed document "Financial Report Q3"</div>
                 </div>
                 <div class="log-entry">
-                    <div class="timestamp">2025-07-06 14:28:15</div>
-                    <div>Crew query: "Analyze stellar drift patterns"</div>
+                    <div class="timestamp">15 minutes ago</div>
+                    <div>User query: "Analyze customer sentiment trends"</div>
                 </div>
                 <div class="log-entry">
-                    <div class="timestamp">2025-07-06 14:25:42</div>
-                    <div>System integrity check completed</div>
+                    <div class="timestamp">1 hour ago</div>
+                    <div>System backup completed successfully</div>
                 </div>
             </div>
         </div>
 
-        <div id="docs" class="section glassmorphism">
-            <h1><i class="fas fa-folder-open"></i> Data Archives</h1>
+        <div id="docs" class="section">
+            <h1><i class="fas fa-file-alt"></i> Documents</h1>
             
-            <div class="card glassmorphism">
-                <h2>Upload New Data Log</h2>
+            <div class="card">
+                <h2>Upload New Document</h2>
                 <div class="form-group">
-                    <label for="docFile">Select Quantum File</label>
-                    <input type="file" id="docFile" accept=".pdf,.doc,.docx,.txt,.qf">
+                    <label for="docFile">Select File</label>
+                    <input type="file" id="docFile" accept=".pdf,.doc,.docx,.txt">
                 </div>
                 <div class="form-group">
-                    <label for="docName">Data Log Designation</label>
-                    <input type="text" id="docName" placeholder="Enter log name">
+                    <label for="docName">Document Name</label>
+                    <input type="text" id="docName" placeholder="Enter document name">
                 </div>
                 <div class="form-group">
-                    <label for="docCategory">Archive Category</label>
+                    <label for="docCategory">Category</label>
                     <select id="docCategory">
                         <option value="">Select Category</option>
-                        <option value="reports">Mission Reports</option>
-                        <option value="contracts">Alliance Treaties</option>
-                        <option value="research">Cosmic Research</option>
-                        <option value="training">AI Training Modules</option>
+                        <option value="reports">Reports</option>
+                        <option value="contracts">Contracts</option>
+                        <option value="research">Research</option>
+                        <option value="training">Training Data</option>
                     </select>
                 </div>
-                <button class="btn" onclick="uploadDocument()">Upload Data</button>
+                <button class="btn" onclick="uploadDocument()">Upload Document</button>
             </div>
 
-            <div class="card glassmorphism">
-                <h2>Archived Logs</h2>
+            <div class="card">
+                <h2>Document Library</h2>
                 <div class="log-entry">
-                    <strong>Galactic Survey Report.qf</strong>
-                    <div class="timestamp">Uploaded 2 hours ago • Mission Reports</div>
+                    <strong>Financial Report Q3.pdf</strong>
+                    <div class="timestamp">Uploaded 2 hours ago • Reports</div>
                     <div style="margin-top: 10px;">
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: 100%"></div>
@@ -767,8 +617,8 @@
                     </div>
                 </div>
                 <div class="log-entry">
-                    <strong>Nebula Anomaly Scan.docx</strong>
-                    <div class="timestamp">Uploaded 1 day ago • Cosmic Research</div>
+                    <strong>Customer Feedback Analysis.docx</strong>
+                    <div class="timestamp">Uploaded 1 day ago • Research</div>
                     <div style="margin-top: 10px;">
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: 75%"></div>
@@ -777,8 +627,8 @@
                     </div>
                 </div>
                 <div class="log-entry">
-                    <strong>Starship Protocols V.7.pdf</strong>
-                    <div class="timestamp">Uploaded 3 days ago • AI Training Modules</div>
+                    <strong>Training Manual 2024.pdf</strong>
+                    <div class="timestamp">Uploaded 3 days ago • Training Data</div>
                     <div style="margin-top: 10px;">
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: 100%"></div>
@@ -789,286 +639,286 @@
             </div>
         </div>
 
-        <div id="model" class="section glassmorphism">
-            <h1><i class="fas fa-brain"></i> AI Core Diagnostics</h1>
+        <div id="model" class="section">
+            <h1><i class="fas fa-brain"></i> AI Model</h1>
             
-            <div class="card glassmorphism">
-                <h2>Core Status</h2>
+            <div class="card">
+                <h2>Model Status</h2>
                 <div style="margin: 20px 0;">
-                    <span class="model-status status-active">Operational</span>
-                    <span style="margin-left: 20px; color: var(--text-primary);">Version: AI-7.1.3</span>
+                    <span class="model-status status-active">Active</span>
+                    <span style="margin-left: 20px; color: var(--text-light);">Version: 2.1.3</span>
                 </div>
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <h3>1.8ms</h3>
-                        <p>Avg. Quantum Response</p>
+                        <h3>2.1ms</h3>
+                        <p>Average Response Time</p>
                     </div>
                     <div class="stat-card">
-                        <h3>99.99%</h3>
-                        <p>System Uptime</p>
+                        <h3>99.9%</h3>
+                        <p>Uptime</p>
                     </div>
                     <div class="stat-card">
-                        <h3>45.2TB</h3>
-                        <p>Knowledge Base Size</p>
+                        <h3>45.2GB</h3>
+                        <p>Model Size</p>
                     </div>
                 </div>
             </div>
 
-            <div class="card glassmorphism">
-                <h2>Core Configuration</h2>
+            <div class="card">
+                <h2>Model Configuration</h2>
                 <div class="form-group">
-                    <label for="modelTemp">Cognitive Temperature</label>
+                    <label for="modelTemp">Temperature</label>
                     <input type="range" id="modelTemp" min="0" max="1" step="0.1" value="0.7">
                     <span id="tempValue">0.7</span>
                 </div>
                 <div class="form-group">
-                    <label for="maxTokens">Max Response Tokens</label>
+                    <label for="maxTokens">Max Tokens</label>
                     <input type="number" id="maxTokens" value="2048">
                 </div>
                 <div class="form-group">
-                    <label for="modelMode">Directive Mode</label>
+                    <label for="modelMode">Response Mode</label>
                     <select id="modelMode">
-                        <option value="balanced">Balanced Protocol</option>
-                        <option value="creative">Creative Simulation</option>
-                        <option value="precise">Precise Analysis</option>
+                        <option value="balanced">Balanced</option>
+                        <option value="creative">Creative</option>
+                        <option value="precise">Precise</option>
                     </select>
                 </div>
-                <button class="btn" onclick="updateModelConfig()">Calibrate Core</button>
+                <button class="btn" onclick="updateModelConfig()">Update Configuration</button>
             </div>
         </div>
 
-        <div id="logs" class="section glassmorphism">
-            <h1><i class="fas fa-telescope"></i> Probe Query Logs</h1>
+        <div id="logs" class="section">
+            <h1><i class="fas fa-search"></i> Query Logs</h1>
             
-            <div class="card glassmorphism">
-                <h2>Log Filters</h2>
+            <div class="card">
+                <h2>Search Filters</h2>
                 <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-                    <div class="form-group" style="flex: 1; min-width: 280px;">
-                        <label for="searchQuery">Search Transmissions</label>
-                        <input type="text" id="searchQuery" placeholder="Enter query terms">
+                    <div class="form-group" style="flex: 1; min-width: 250px;">
+                        <label for="searchQuery">Search Query</label>
+                        <input type="text" id="searchQuery" placeholder="Enter search terms">
                     </div>
                     <div class="form-group" style="flex: 1; min-width: 180px;">
-                        <label for="dateRange">Cycle Range</label>
+                        <label for="dateRange">Date Range</label>
                         <select id="dateRange">
-                            <option value="today">Current Cycle</option>
-                            <option value="week">This Stardate Week</option>
-                            <option value="month">This Lunar Cycle</option>
-                            <option value="all">All Logs</option>
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                            <option value="all">All Time</option>
                         </select>
                     </div>
                     <div class="form-group" style="flex: 0 0 auto;">
                         <label style="opacity: 0;">.</label>
-                        <button class="btn" onclick="filterLogs()">Retrieve Logs</button>
+                        <button class="btn" onclick="filterLogs()">Filter</button>
                     </div>
                 </div>
             </div>
 
-            <div class="card glassmorphism">
-                <h2>Recent Query Transmissions</h2>
+            <div class="card">
+                <h2>Recent Queries</h2>
                 <div class="log-entry">
-                    <div class="timestamp">2025-07-06 14:30:25</div>
-                    <div><strong>Query:</strong> "Report key findings from exoplanet scans."</div>
-                    <div><strong>Response Latency:</strong> 1.8ms</div>
-                    <div><strong>Status:</strong> <span style="color: var(--space-light-blue);">Success</span></div>
+                    <div class="timestamp">2024-07-06 14:30:25</div>
+                    <div><strong>Query:</strong> "What are the key insights from the financial report?"</div>
+                    <div><strong>Response Time:</strong> 1.8ms</div>
+                    <div><strong>Status:</strong> <span style="color: var(--primary-color);">Success</span></div>
                 </div>
                 <div class="log-entry">
-                    <div class="timestamp">2025-07-06 14:28:15</div>
-                    <div><strong>Query:</strong> "Analyze interstellar dust composition."</div>
-                    <div><strong>Response Latency:</strong> 2.1ms</div>
-                    <div><strong>Status:</strong> <span style="color: var(--space-light-blue);">Success</span></div>
+                    <div class="timestamp">2024-07-06 14:28:15</div>
+                    <div><strong>Query:</strong> "Analyze customer satisfaction trends"</div>
+                    <div><strong>Response Time:</strong> 2.1ms</div>
+                    <div><strong>Status:</strong> <span style="color: var(--primary-color);">Success</span></div>
                 </div>
                 <div class="log-entry">
-                    <div class="timestamp">2025-07-06 14:25:42</div>
-                    <div><strong>Query:</strong> "Generate synopsis of recent cosmic anomalies."</div>
-                    <div><strong>Response Latency:</strong> 1.9ms</div>
-                    <div><strong>Status:</strong> <span style="color: var(--space-light-blue);">Success</span></div>
+                    <div class="timestamp">2024-07-06 14:25:42</div>
+                    <div><strong>Query:</strong> "Generate summary of meeting notes"</div>
+                    <div><strong>Response Time:</strong> 1.9ms</div>
+                    <div><strong>Status:</strong> <span style="color: var(--primary-color);">Success</span></div>
                 </div>
                 <div class="log-entry">
-                    <div class="timestamp">2025-07-06 14:22:18</div>
-                    <div><strong>Query:</strong> "Extract critical parameters from warp core diagnostics."</div>
-                    <div><strong>Response Latency:</strong> 3.2ms</div>
-                    <div><strong>Status:</strong> <span style="color: var(--space-light-blue);">Success</span></div>
+                    <div class="timestamp">2024-07-06 14:22:18</div>
+                    <div><strong>Query:</strong> "Extract key data points from contract"</div>
+                    <div><strong>Response Time:</strong> 3.2ms</div>
+                    <div><strong>Status:</strong> <span style="color: var(--primary-color);">Success</span></div>
                 </div>
             </div>
         </div>
 
-        <div id="feedback" class="section glassmorphism">
-            <h1><i class="fas fa-comments"></i> Uplink Feedback</h1>
+        <div id="feedback" class="section">
+            <h1><i class="fas fa-comments"></i> Feedback</h1>
             
-            <div class="card glassmorphism">
-                <h2>Transmit Feedback</h2>
+            <div class="card">
+                <h2>Submit Feedback</h2>
                 <div class="form-group">
-                    <label for="feedbackType">Transmission Type</label>
+                    <label for="feedbackType">Feedback Type</label>
                     <select id="feedbackType">
-                        <option value="general">General Transmission</option>
-                        <option value="bug">System Glitch Report</option>
-                        <option value="feature">Enhancement Request</option>
-                        <option value="improvement">Operational Suggestion</option>
+                        <option value="general">General Feedback</option>
+                        <option value="bug">Bug Report</option>
+                        <option value="feature">Feature Request</option>
+                        <option value="improvement">Improvement Suggestion</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="feedbackRating">Assessment Rating</label>
+                    <label for="feedbackRating">Rating</label>
                     <select id="feedbackRating">
-                        <option value="5">5 Stars - Outstanding</option>
-                        <option value="4">4 Stars - Proficient</option>
-                        <option value="3">3 Stars - Standard</option>
-                        <option value="2">2 Stars - Suboptimal</option>
-                        <option value="1">1 Star - Critical Error</option>
+                        <option value="5">5 Stars - Excellent</option>
+                        <option value="4">4 Stars - Good</option>
+                        <option value="3">3 Stars - Average</option>
+                        <option value="2">2 Stars - Poor</option>
+                        <option value="1">1 Star - Very Poor</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="feedbackMessage">Message Log</label>
-                    <textarea id="feedbackMessage" rows="4" placeholder="Log your observations..."></textarea>
+                    <label for="feedbackMessage">Message</label>
+                    <textarea id="feedbackMessage" rows="4" placeholder="Share your feedback..."></textarea>
                 </div>
-                <button class="btn" onclick="submitFeedback()">Send Transmission</button>
+                <button class="btn" onclick="submitFeedback()">Submit Feedback</button>
             </div>
 
-            <div class="card glassmorphism">
-                <h2>Recent Uplinks</h2>
+            <div class="card">
+                <h2>Recent Feedback</h2>
                 <div class="feedback-item">
                     <div class="rating">★★★★★</div>
                     <div style="margin: 10px 0;">
-                        <strong>AI Core performance is stellar!</strong>
+                        <strong>Amazing response accuracy!</strong>
                     </div>
-                    <div>"The AI Core's analytical capabilities are beyond expectations, crucial for deep space navigation."</div>
+                    <div>"The AI model's responses have been incredibly accurate and helpful for our document analysis needs."</div>
                     <div class="timestamp">2 hours ago</div>
                 </div>
                 <div class="feedback-item">
                     <div class="rating">★★★★☆</div>
                     <div style="margin: 10px 0;">
-                        <strong>Good, but faster data processing needed.</strong>
+                        <strong>Good but could be faster</strong>
                     </div>
-                    <div>"Mission critical data processing could benefit from a speed optimization for large cosmological datasets."</div>
+                    <div>"The results are great, but it would be nice if the processing time was a bit faster for large documents."</div>
                     <div class="timestamp">1 day ago</div>
                 </div>
                 <div class="feedback-item">
                     <div class="rating">★★★★★</div>
                     <div style="margin: 10px 0;">
-                        <strong>Helm display interface is intuitive.</strong>
+                        <strong>Excellent dashboard interface</strong>
                     </div>
-                    <div>"The new dashboard UI integrates seamlessly with our existing ship systems. Excellent design."</div>
+                    <div>"Love the new dashboard design. Very intuitive and easy to navigate."</div>
                     <div class="timestamp">3 days ago</div>
                 </div>
             </div>
         </div>
 
-        <div id="analytics" class="section glassmorphism">
-            <h1><i class="fas fa-chart-area"></i> Stellar Analytics</h1>
+        <div id="analytics" class="section">
+            <h1><i class="fas fa-chart-bar"></i> Analytics</h1>
             
             <div class="stats-grid">
                 <div class="stat-card">
                     <h3>+25%</h3>
-                    <p>Module Usage Growth</p>
+                    <p>Usage Growth</p>
                 </div>
                 <div class="stat-card">
                     <h3>87%</h3>
-                    <p>Crew Retention Rate</p>
+                    <p>User Retention</p>
                 </div>
                 <div class="stat-card">
-                    <h3>3.2min</h3>
-                    <p>Avg. Console Session</p>
+                    <h3>3.2s</h3>
+                    <p>Avg Session Time</p>
                 </div>
                 <div class="stat-card">
                     <h3>245</h3>
-                    <p>Active Crew Terminals</p>
+                    <p>Active Users</p>
                 </div>
             </div>
 
-            <div class="card glassmorphism">
-                <h2>Operational Metrics</h2>
+            <div class="card">
+                <h2>Usage Analytics</h2>
                 <div class="chart-container">
                     <i class="fas fa-chart-line"></i>
-                    <div>Hyperspace Trajectory Visualizer</div>
-                    <small>Real-time system load and data flow</small>
+                    <div>Interactive Chart Placeholder</div>
+                    <small>Real-time usage data visualization</small>
                 </div>
             </div>
 
-            <div class="card glassmorphism">
-                <h2>Performance Diagnostics</h2>
+            <div class="card">
+                <h2>Performance Metrics</h2>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
                     <div>
-                        <h3>Response Latency</h3>
+                        <h3>Response Times</h3>
                         <div class="chart-container" style="height: 200px;">
                             <i class="fas fa-tachometer-alt"></i>
-                            <div>Avg: 1.8ms</div>
+                            <div>Avg: 2.1ms</div>
                         </div>
                     </div>
                     <div>
-                        <h3>Critical Error Rate</h3>
+                        <h3>Error Rates</h3>
                         <div class="chart-container" style="height: 200px;">
                             <i class="fas fa-exclamation-triangle"></i>
-                            <div>0.05% Error Threshold</div>
+                            <div>0.1% Error Rate</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="settings" class="section glassmorphism">
-            <h1><i class="fas fa-cogs"></i> System Settings</h1>
+        <div id="settings" class="section">
+            <h1><i class="fas fa-cog"></i> Settings</h1>
             
-            <div class="card glassmorphism">
-                <h2>General Console Settings</h2>
+            <div class="card">
+                <h2>General Settings</h2>
                 <div class="form-group">
-                    <label for="siteName">Console Designation</label>
-                    <input type="text" id="siteName" value="AI Starship Console">
+                    <label for="siteName">Site Name</label>
+                    <input type="text" id="siteName" value="AI Dashboard">
                 </div>
                 <div class="form-group">
-                    <label for="adminEmail">Chief Engineer Uplink</label>
-                    <input type="email" id="adminEmail" value="chief.engineer@starship.com">
+                    <label for="adminEmail">Admin Email</label>
+                    <input type="email" id="adminEmail" value="admin@example.com">
                 </div>
                 <div class="form-group">
-                    <label for="timezone">Temporal Zone</label>
+                    <label for="timezone">Timezone</label>
                     <select id="timezone">
-                        <option value="UTC">Universal Coordinated Time</option>
-                        <option value="EST">Earth Standard Time (EST)</option>
-                        <option value="PST">Planetary Standard Time (PST)</option>
-                        <option value="GMT">Galactic Meridian Time (GMT)</option>
+                        <option value="UTC">UTC</option>
+                        <option value="EST">Eastern Time</option>
+                        <option value="PST">Pacific Time</option>
+                        <option value="GMT">GMT</option>
                     </select>
                 </div>
-                <button class="btn" onclick="saveGeneralSettings()">Save Configurations</button>
+                <button class="btn" onclick="saveGeneralSettings()">Save Settings</button>
             </div>
 
-            <div class="card glassmorphism">
-                <h2>Security Protocols</h2>
+            <div class="card">
+                <h2>Security Settings</h2>
                 <div class="form-group">
-                    <label for="apiKey">Quantum Encryption Key</label>
+                    <label for="apiKey">API Key</label>
                     <input type="password" id="apiKey" value="••••••••••••••••">
                 </div>
                 <div class="form-group">
-                    <label for="sessionTimeout">Session Lockdown (stardates)</label>
+                    <label for="sessionTimeout">Session Timeout (minutes)</label>
                     <input type="number" id="sessionTimeout" value="30">
                 </div>
                 <div class="form-group">
                     <label>
                         <input type="checkbox" id="twoFactor" checked>
-                        Enable Biometric Authentication
+                        Enable Two-Factor Authentication
                     </label>
                 </div>
-                <button class="btn" onclick="saveSecuritySettings()">Activate Protocols</button>
+                <button class="btn" onclick="saveSecuritySettings()">Update Security</button>
             </div>
 
-            <div class="card glassmorphism">
-                <h2>Notification Subsystems</h2>
+            <div class="card">
+                <h2>Notification Settings</h2>
                 <div class="form-group">
                     <label>
                         <input type="checkbox" id="emailNotifs" checked>
-                        Crew Comm Notifications
+                        Email Notifications
                     </label>
                 </div>
                 <div class="form-group">
                     <label>
                         <input type="checkbox" id="pushNotifs" checked>
-                        Proximity Alerts
+                        Push Notifications
                     </label>
                 </div>
                 <div class="form-group">
                     <label>
                         <input type="checkbox" id="smsNotifs">
-                        Emergency Beacon Signals
+                        SMS Notifications
                     </label>
                 </div>
-                <button class="btn" onclick="saveNotificationSettings()">Store Preferences</button>
+                <button class="btn" onclick="saveNotificationSettings()">Save Preferences</button>
             </div>
         </div>
     </div>
@@ -1105,7 +955,7 @@
                 return;
             }
             
-            alert('Data Log uploaded successfully!');
+            alert('Document uploaded successfully!');
             // Reset form
             fileInput.value = '';
             nameInput.value = '';
@@ -1117,14 +967,14 @@
             const tokens = document.getElementById('maxTokens').value;
             const mode = document.getElementById('modelMode').value;
             
-            alert(`AI Core configuration updated:\nCognitive Temperature: ${temp}\nMax Response Tokens: ${tokens}\nDirective Mode: ${mode}`);
+            alert(`Model configuration updated:\nTemperature: ${temp}\nMax Tokens: ${tokens}\nMode: ${mode}`);
         }
 
         function filterLogs() {
             const query = document.getElementById('searchQuery').value;
             const dateRange = document.getElementById('dateRange').value;
             
-            alert(`Retrieving logs with query: "${query}" for ${dateRange} cycle range.`);
+            alert(`Filtering logs with query: "${query}" for ${dateRange}`);
         }
 
         function submitFeedback() {
@@ -1133,24 +983,24 @@
             const message = document.getElementById('feedbackMessage').value;
             
             if (!message) {
-                alert('Please log a message');
+                alert('Please enter a feedback message');
                 return;
             }
             
-            alert('Transmission sent. Thank you for your feedback!');
+            alert('Thank you for your feedback!');
             document.getElementById('feedbackMessage').value = '';
         }
 
         function saveGeneralSettings() {
-            alert('Console settings saved successfully!');
+            alert('General settings saved successfully!');
         }
 
         function saveSecuritySettings() {
-            alert('Security protocols activated successfully!');
+            alert('Security settings updated successfully!');
         }
 
         function saveNotificationSettings() {
-            alert('Notification preferences stored successfully!');
+            alert('Notification preferences saved successfully!');
         }
     </script>
 </body>
