@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MOSDAC AI Mock</title>
+  <style>
+    /* Navigation */
+    nav {
+      background-color: #003d80;
+      display: flex;
+      padding: 10px 0;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+    }
+
+    .menu-buttons {
+      margin: 10px 0;
+      text-align: left;
+    }
+
+    .menu-buttons button {
+      margin: 5px;
+      padding: 5px 10px;
+      font-weight: bold;
+      border: 1px solid #555;
+      background: white;
+      cursor: pointer;
+    }
+
+    /* Satellite */
+    .satellite-container {
+      background-color: black;
+      padding: 20px;
+      text-align: center;
+      color: white;
+    }
+
+    .satellite-container h3 {
+      margin-bottom: 10px;
+    }
+
+    .satellite-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 360px;
+      overflow: hidden;
+    }
+
+    .satellite-wrapper img {
+      height: 95%;
+      object-fit: contain;
+    }
+
+    .satellite-timeline {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+    }
+    .timeline-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+        /* Chatbot Icon */
+        .chatbot-icon {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #8E2DE2, #4A00E0); /* Matches body gradient */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 10px 40px rgba(74, 0, 224, 0.4); /* Deeper shadow */
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother transition */
+            z-index: 1000;
+            backdrop-filter: blur(15px); /* Increased blur for more depth */
+            border: 1px solid rgba(255, 255, 255, 0.3); /* More visible border */
+            overflow: hidden; /* For the pseudo-element glow */
+        }
+
+        .chatbot-icon:hover {
+            transform: scale(1.15) rotate(5deg); /* Slightly larger scale, less rotation */
+            box-shadow: 0 15px 50px rgba(74, 0, 224, 0.6); /* More intense shadow on hover */
+            border-color: rgba(255, 255, 255, 0.6); /* Brighter border on hover */
+        }
+
+        .chatbot-icon::before {
+            content: '';
+            position: absolute;
+            inset: -5px; /* Larger inset for glow */
+            border-radius: 50%;
+            background: conic-gradient(from 0deg at 50% 50%, #FFD700, #FF69B4, #8A2BE2, #00BFFF, #FFD700); /* Rainbow conic gradient */
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            filter: blur(10px); /* Blur the glow */
+            animation: rotate 3s linear infinite paused; /* Pause by default, play on hover */
+        }
+
+        .chatbot-icon:hover::before {
+            opacity: 1;
+            animation-play-state: running; /* Play animation on hover */
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .chatbot-icon svg {
+            width: 38px; /* Slightly larger icon */
+            height: 38px;
+            fill: white;
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2)); /* Subtle icon shadow */
+        }
+
+        /* Chatbox */
+        .chatbox {
+            position: fixed;
+            bottom: 120px;
+            right: 30px;
+            width: 400px;
+            height: 340px;
+            background: rgba(64, 94, 217, 0.4); /* More transparent base */
+            backdrop-filter: blur(40px) saturate(180%);
+            border-radius: 28px; /* Softer corners */
+            border: 1px solid rgba(255, 255, 255, 0.25); /* Clearer border */
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4); /* More prominent shadow */
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother transition */
+            z-index: 999;
+            transform: translateY(50%) scale(0.7); /* Starts lower and smaller */
+            opacity: 1;
+            display: flex; /* Use flexbox for layout */
+            flex-direction: column;
+        }
+
+        .chatbox.visible {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        .chatbox-header {
+            background: rgba(13, 10, 232, 0.15); /* Slightly less transparent header */
+            padding: 22px; /* More padding */
+            color: white;
+            font-size: 26px; /* Larger font */
+            font-weight: 700; /* Bolder font */
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px; /* Slight letter spacing */
+            text-shadow: 0 1px 3px rgba(0,0,0,0.2); /* Text shadow */
+        }
+
+        .chatbox-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%; /* Start further left */
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent); /* Stronger shimmer */
+            transition: left 0.9s ease-out; /* Slower, smoother shimmer */
+        }
+
+        .chatbox-header:hover::before {
+            left: 150%; /* End further right */
+        }
+
+        .chatbox-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px; /* Slightly smaller gap between messages */
+            height: calc(100% - 150px); /* Adjusted height to account for header and input */
+        }
+
+        .chatbox-body::-webkit-scrollbar {
+            width: 8px; /* Wider scrollbar */
+        }
+
+        .chatbox-body::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05); /* Lighter track */
+            border-radius: 10px;
+        }
+
+        .chatbox-body::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.4); /* More opaque thumb */
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Border on thumb */
+        }
+
+        .message {
+            padding: 15px 20px; /* More padding */
+            border-radius: 20px; /* Softer message bubbles */
+            max-width: 80%; /* Slightly smaller max-width */
+            word-wrap: break-word;
+            animation: messageSlideIn 0.4s ease-out forwards; /* Keep animation */
+            font-size: 15px; /* Slightly larger font for readability */
+            line-height: 1.5;
+        }
+
+        @keyframes messageSlideIn {
+            from {
+                opacity: 50;
+                transform: translateY(20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .bot-msg {
+            background: rgba(255, 255, 255, 0.15); /* More distinct bot message background */
+            color: white;
+            align-self: flex-start;
+            border-bottom-left-radius: 8px; /* Slightly larger radius for the 'tail' */
+            backdrop-filter: blur(12px); /* Increased blur */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+        }
+
+        .user-msg {
+            background: linear-gradient(135deg, #8E2DE2, #4A00E0); /* Matches chatbot icon gradient */
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 8px;
+            box-shadow: 0 6px 25px rgba(74, 0, 224, 0.35); /* More prominent shadow */
+        }
+
+        .quick-replies {
+            display: flex;
+            flex-wrap: wrap; /* Allow wrapping for more buttons */
+            gap: 10px;
+            margin-top: 15px; /* More space above quick replies */
+        }
+
+        .quick-reply-btn {
+            background: rgba(155, 137, 137, 0.1); /* More transparent default */
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.35); /* Stronger border */
+            padding: 13px 18px; /* More padding */
+            border-radius: 15px; /* Softer corners */
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            font-size: 14.5px; /* Slightly larger font */
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .quick-reply-btn:hover {
+            background: rgba(255, 255, 255, 0.2); /* More opaque on hover */
+            transform: translateY(-3px) scale(1.02); /* More pronounced lift */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); /* Deeper shadow */
+            border-color: rgba(255, 255, 255, 0.5); /* Brighter border on hover */
+        }
+
+        .chatbox-input {
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            align-items: center; /* Vertically align items */
+        }
+
+        .chatbox-input input {
+            flex: 1;
+            padding: 15px 20px; /* More padding */
+            border: 1px solid rgba(255, 255, 255, 0.25); /* Clearer border */
+            border-radius: 28px; /* Softer rounded corners */
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 15px; /* Larger font */
+            outline: none;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            backdrop-filter: blur(10px);
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1); /* Inner shadow for depth */
+        }
+
+        .chatbox-input input::placeholder {
+            color: rgba(255, 255, 255, 0.7); /* Brighter placeholder */
+        }
+
+        .chatbox-input input:focus {
+            border-color: rgba(255, 255, 255, 0.6); /* Even brighter border on focus */
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.01); /* Subtle scale on focus */
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.15), 0 0 15px rgba(255,255,255,0.1); /* Added outer glow on focus */
+        }
+
+        .send-btn {
+            padding: 15px 25px; /* More padding */
+            background: linear-gradient(135deg, #8E2DE2, #4A00E0);
+            color: white;
+            border: none;
+            border-radius: 28px; /* Softer rounded corners */
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 5px 20px rgba(74, 0, 224, 0.3);
+            font-size: 15px; /* Larger font */
+            letter-spacing: 0.5px;
+        }
+
+        .send-btn:hover {
+            transform: translateY(-3px); /* More pronounced lift */
+            box-shadow: 0 8px 30px rgba(74, 0, 224, 0.5); /* Stronger shadow */
+            filter: brightness(1.1); /* Slightly brighter on hover */
+        }
+
+        .send-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 10px rgba(74, 0, 224, 0.4);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Typing indicator */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* More space */
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            border-bottom-left-radius: 8px;
+            max-width: 80%;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            align-self: flex-start; /* Ensure it aligns like a bot message */
+            
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 5px; /* Slightly more space between dots */
+        }
+
+        .dot {
+            width: 9px; /* Slightly larger dots */
+            height: 9px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9); /* Brighter dots */
+            animation: typing 1.5s infinite ease-in-out; /* Slower typing animation */
+        }
+
+        .dot:nth-child(1) { animation-delay: 0s; }
+        .dot:nth-child(2) { animation-delay: 0.25s; } /* Adjusted delays */
+        .dot:nth-child(3) { animation-delay: 0.5s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+            30% { transform: translateY(-8px); opacity: 1; } /* Less vertical movement */
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .chatbox {
+                width: 90%; /* Larger on mobile */
+                height: 80vh; /* Takes more vertical space */
+                right: 5%;
+                bottom: 80px; /* Adjust position */
+                transform: translateY(20%) scale(0.8); /* Adjusted initial transform for mobile */
+                opacity: 0.6;
+
+
+            }
+            
+            .chatbot-icon {
+                right: 20px;
+                bottom: 20px;
+                width: 55px;
+                height: 55px;
+            }
+
+            .chatbot-icon svg {
+                width: 30px;
+                height: 30px;
+            }
+
+            .chatbox-body {
+                padding: 15px; /* Less padding on mobile */
+                gap: 10px;
+                
+  background-color: rgba(0, 0, 0, 0.6); /* black with 60% opacity */
+  border-radius: 15px;
+  padding: 15px;
+}
+
+            }
+
+            .message {
+                max-width: 90%; /* Wider messages on small screens */
+                padding: 12px 16px;
+                font-size: 14px;
+            }
+
+            .chatbox-input {
+                padding: 15px;
+            }
+
+            .chatbox-input input {
+                padding: 12px 16px;
+                font-size: 13px;
+            }
+
+            .send-btn {
+                padding: 12px 18px;
+                font-size: 14px;
+            }
+
+            .quick-reply-btn {
+                padding: 10px 14px;
+                font-size: 13px;
+            }
+        
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <img src="mosdac_logo.jpg" alt="MOSDAC Logo">
+    <div class="auth-links">
+      <a href="#">SignUp</a> |
+      <a href="#">Login</a> |
+      <a href="#">Logout</a>
+    </div>
+  </header>
+
+  <!-- Navigation -->
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Missions</a>
+    <a href="#">Catalog</a>
+    <a href="#">Galleries</a>
+    <a href="#">Data Access</a>
+    <a href="#">Reports</a>
+    <a href="#">Atlases</a>
+    <a href="#">Tools</a>
+    <a href="#">Sitemap</a>
+    <a href="#">Help</a>
+  </nav>
+
+  <!-- Menu buttons -->
+  <div class="menu-buttons">
+    <button>Satellite Images</button>
+    <button>RADAR</button>
+    <button>Weather</button>
+    <button>OceanState</button>
+    <button>LIVE</button>
+  </div>
+
+  <!-- Satellite Image -->
+  <div class="satellite-container">
+    <h3>Sat Jul 05 2025 19:30:00 (India Standard Time)</h3>
+    <div class="satellite-wrapper">
+      <img src="satellite.jpg" alt="Satellite View">
+    </div>
+    <div class="satellite-timeline">
+      <span>05-07-2025_17:30</span>
+      <div class="timeline-controls">
+        <button>&laquo;</button>
+        <button>⏸️</button>
+        <input type="range" min="1" max="8" value="4">
+        <select>
+          <option>8 Frames</option>
+          <option>12 Frames</option>
+        </select>
+      </div>
+      <span>05-07-2025_21:00</span>
+    </div>
+  </div>
+
+  <!-- Background Particles -->
+  <div class="bg-particles" id="particles"></div>
+
+  <!-- Chatbot Icon -->
+  <div class="chatbot-icon" id="chatbot-icon">
+    <svg viewBox="0 0 24 24">
+      <path d="M21,16.5C21,16.88 20.79,17.21 20.47,17.38L12.57,21.82C12.41,21.94 12.21,22 12,22C11.79,22 11.59,21.94 11.43,21.82L3.53,17.38C3.21,17.21 3,16.88 3,16.5V7.5C3,7.12 3.21,6.79 3.53,6.62L11.43,2.18C11.59,2.06 11.79,2 12,2C12.21,2 12.41,2.06 12.57,2.18L20.47,6.62C20.79,6.79 21,7.12 21,7.5V16.5M12,4.15L6.04,7.5L12,10.85L17.96,7.5L12,4.15M5,15.91L11,19.29V12.58L5,9.21V15.91M19,15.91V9.21L13,12.58V19.29L19,15.91Z" />
+    </svg>
+  </div>
+
+  <!-- Chatbox -->
+  <div id="chatbox" class="chatbox hidden">
+    <div class="chatbox-header">AntarikshMitra</div>
+    <div class="chatbox-body" id="chat-messages">
+      <div class="message bot-msg">Hi 👋 How can I help you?</div>
+      <div class="message user-msg">Looking for satellite data</div>
+      <div class="message bot-msg">
+        Let's take care of that 🛰 <br><br>Please choose a topic:
+        <div class="quick-replies">
+          <button class="quick-reply-btn" onclick="quickReply('Show latest satellite')">📡 Latest Satellite</button>
+          <button class="quick-reply-btn" onclick="quickReply('Show rainfall map')">🌧 Rainfall Map</button>
+          <button class="quick-reply-btn" onclick="quickReply('Where is cyclone?')">🌪 Cyclone Alert</button>
+        </div>
+      </div>
+    </div>
+    <div class="chatbox-input">
+      <input type="text" id="user-input" placeholder="Type your question..." />
+      <button class="send-btn" onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      for (let i = 0; i < 60; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.top = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 10 + 's';
+        particle.style.animationDuration = (Math.random() * 6 + 6) + 's';
+        const size = Math.random() * 3 + 2;
+        particle.style.width = size + 'px';
+        particle.style.height = size + 'px';
+        particlesContainer.appendChild(particle);
+      }
+    }
+
+    document.getElementById('chatbot-icon').addEventListener('click', function () {
+      const chatbox = document.getElementById('chatbox');
+      const isHidden = chatbox.classList.contains('hidden');
+      if (isHidden) {
+        chatbox.classList.remove('hidden');
+        setTimeout(() => chatbox.classList.add('visible'), 10);
+      } else {
+        chatbox.classList.remove('visible');
+        chatbox.addEventListener('transitionend', function handler() {
+          chatbox.classList.add('hidden');
+          chatbox.removeEventListener('transitionend', handler);
+        }, { once: true });
+      }
+    });
+
+    function sendMessage() {
+      const input = document.getElementById('user-input');
+      const message = input.value.trim();
+      if (message) {
+        addMessage(message, 'user');
+        input.value = '';
+        showTypingIndicator();
+        setTimeout(() => {
+          hideTypingIndicator();
+          addBotResponse(message);
+        }, 1500);
+      }
+    }
+
+    function addMessage(text, sender) {
+      const chatMessages = document.getElementById('chat-messages');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${sender}-msg`;
+      messageDiv.innerHTML = text;
+      chatMessages.appendChild(messageDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function quickReply(text) {
+      addMessage(text, 'user');
+      showTypingIndicator();
+      setTimeout(() => {
+        hideTypingIndicator();
+        addBotResponse(text);
+      }, 1500);
+    }
+
+    function showTypingIndicator() {
+      const chatMessages = document.getElementById('chat-messages');
+      const existing = document.getElementById('typing-indicator');
+      if (existing) return;
+      const typingDiv = document.createElement('div');
+      typingDiv.className = 'typing-indicator';
+      typingDiv.id = 'typing-indicator';
+      typingDiv.innerHTML = `
+        <div class="typing-dots">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+        <span style="color: rgba(255,255,255,0.8); margin-left: 8px;">AntarikshaMitra is typing...</span>`;
+      chatMessages.appendChild(typingDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function hideTypingIndicator() {
+      const indicator = document.getElementById('typing-indicator');
+      if (indicator) indicator.remove();
+    }
+
+    function addBotResponse(userMessage) {
+      let response = '';
+      if (userMessage.includes('satellite')) {
+        response = `🛰 Here's the latest satellite data for your region.<br><br><div class="quick-replies"><button class="quick-reply-btn" onclick="quickReply('ISRO satellites')">🇮🇳 ISRO Satellites</button><button class="quick-reply-btn" onclick="quickReply('Weather satellites')">🌤 Weather Data</button><button class="quick-reply-btn" onclick="quickReply('Earth observation')">🌍 Earth Observation</button></div>`;
+      } else if (userMessage.includes('rainfall')) {
+        response = `🌧 Rainfall map is ready! Current precipitation data shows:<br><br>• Heavy rainfall in Western Ghats<br>• Moderate showers in coastal areas<br>• Clear skies in northern regions<br><br>Would you like detailed forecasts for your area?`;
+      } else if (userMessage.includes('cyclone')) {
+        response = `🌪 Cyclone Alert System Active<br><br>⚠ Current Status: All Clear<br>📍 No active cyclones detected in your region<br>🔄 Last updated: 2 hours ago<br><br>I'll notify you of any weather disturbances!`;
+      } else if (userMessage.includes('ISRO')) {
+        response = `🇮🇳 India has a robust satellite program:<br>• Cartosat Series<br>• RISAT Series<br>• GSAT Series<br>• IRNSS/NavIC<br>Which one interests you?`;
+      } else if (userMessage.includes('Weather')) {
+        response = `🌤 Real-time updates:<br>• Cloud cover<br>• Temperature/humidity<br>• Storm tracking<br>• Pressure changes<br><br>Ask for a location weather brief.`;
+      } else if (userMessage.includes('Earth')) {
+        response = `🌍 Earth observation satellites monitor:<br>• Land use<br>• Agriculture<br>• Forests<br>• Water bodies<br>• Urbanization<br><br>Need help exploring any of these?`;
+      } else {
+        response = `Thanks for your message! I'm here to help with satellite data, weather info, and space-related queries. 🚀`;
+      }
+      addMessage(response, 'bot');
+    }
+
+    document.getElementById('user-input').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') sendMessage();
+    });
+
+    createParticles();
+  </script>
+
+</body>
+</html>
